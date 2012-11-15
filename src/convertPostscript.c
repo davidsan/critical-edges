@@ -28,8 +28,7 @@ int main(int argc, char **argv) {
 		filename = basename(argv[i]);
 		filename = strtok(filename, ".");
 		filename = strcat(filename, ".ps");
-		fprintf(stderr, "Converting %s to %s ...\n", basename(argv[i]),
-				filename);
+		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
 		writeGraphe(filename, G);
 		fprintf(stderr, "Done.\n");
 		freeGraphe(G);
