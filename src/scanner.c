@@ -1,8 +1,6 @@
-/*
- * scanner.c
- *
- *  Created on: 30 oct. 2012
- *      Author: david
+/**
+ * \file scanner.c
+ * \brief Source de scanner
  */
 #include "scanner.h"
 

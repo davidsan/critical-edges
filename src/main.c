@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 	}
 
 	// fprintf(stdout, "Ouverture du fichier %s\n", argv[1]);
-	f = ouvrirFichier(argv[1]);
+	f = ouvrirFichierRead(argv[1]);
 
 	G = lectureGraphe(f);
 

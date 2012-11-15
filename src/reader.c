@@ -5,10 +5,22 @@
  */
 #include "reader.h"
 
-FILE *ouvrirFichier(char *filename) {
+FILE *ouvrirFichierRead(char *filename) {
 	FILE *f = fopen(filename, "r");
 	if (!f) {
-		fprintf(stderr, "ouvrirFichier : erreur d'ouverture du fichier %s\n",
+		fprintf(stderr,
+				"ouvrirFichierRead : erreur d'ouverture du fichier %s\n",
+				filename);
+		return NULL ;
+	}
+	return f;
+}
+
+FILE *ouvrirFichierWrite(char *filename) {
+	FILE *f = fopen(filename, "w");
+	if (!f) {
+		fprintf(stderr,
+				"ouvrirFichierWrite : erreur d'ouverture du fichier %s\n",
 				filename);
 		return NULL ;
 	}

@@ -65,12 +65,14 @@ void freeArete(Arete * a) {
 
 void freeGraphe(Graphe * G) {
 	int i;
-	for (i = 0; i < G->nbSommets; i++) {
-		freeSommet(G->sommets[i]);
+	if (G) {
+		for (i = 0; i < G->nbSommets; i++) {
+			freeSommet(G->sommets[i]);
+		}
+		free(G->sommets);
+		freeArete(G->aretes);
+		free(G);
 	}
-	free(G->sommets);
-	freeArete(G->aretes);
-	free(G);
 }
 
 Sommet * getSommet(Graphe * G, int n) {

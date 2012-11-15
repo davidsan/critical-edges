@@ -13,7 +13,14 @@
  * @param filename Chaîne de caractères représentant le nom du fichier à ouvrir
  * @return Flux vers le fichier ouvert
  */
-FILE * ouvrirFichier(char * filename);
+FILE * ouvrirFichierRead(char * filename);
+
+/**
+ * @brief Fonction d'ouverture de fichier en écriture
+ * @param filename Chaîne de caractères représentant le nom du fichier à ouvrir
+ * @return Flux vers le fichier ouvert
+ */
+FILE * ouvrirFichierWrite(char * filename);
 /**
  * @brief Fonction de fermeture d'un fichier
  * @param f Flux à fermer
