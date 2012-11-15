@@ -59,7 +59,6 @@ void writeGraphe(char * filename, Graphe * G) {
 	}
 
 	// écriture des sommets
-	setWhite(f);
 	for (i = 0; i < G->nbSommets; i++) {
 		drawCircle(f,
 				border + minX * coefA4x + (int) (G->sommets[i]->x * coefA4x),
@@ -90,6 +89,11 @@ void drawLine(FILE * f, int x1, int y1, int x2, int y2) {
 }
 
 void drawCircle(FILE * f, int x, int y, float diameter) {
+	setBlack(f);
+	fprintf(f, "%d %d %f 0 360 arc closepath\n", x, y, diameter + 0.5);
+	fprintf(f, "fill\n");
+	fprintf(f, "stroke\n");
+	setWhite(f);
 	fprintf(f, "%d %d %f 0 360 arc closepath\n", x, y, diameter);
 	fprintf(f, "fill\n");
 	fprintf(f, "stroke\n");
@@ -134,9 +138,11 @@ void setDarkBlue(FILE *f) {
 }
 
 void setAreteColor(FILE *f) {
-	setLightBlue(f);
+	//setLightBlue(f);
+	setBlack(f);
 }
 
 void setBgColor(FILE *f) {
-	setDarkBlue(f);
+	//setDarkBlue(f);
+	setWhite(f);
 }
