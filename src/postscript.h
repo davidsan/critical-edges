@@ -7,7 +7,10 @@
 #ifndef POSTSCRIPT_H_
 #define POSTSCRIPT_H_
 
-#include <time.h>
+#define DPI_A4_X 842
+#define DPI_A4_Y 595
+#define BORDER 20
+
 #include <limits.h>
 #include "graph.h"
 #include "reader.h"
@@ -20,8 +23,16 @@
 void writeGraphe(char * filename, Graphe * G);
 
 /**
+ * @brief Fonction de conversion d'un graphe vers une réprésentation graphique PostScript
+ * @param filename Nom du fichier de sortie
+ * @param G Adresse du graphe
+ * &param D Adresse de la liste des arêtes
+ */
+void writeGrapheDijkstra(char * filename, Graphe *G, Arete * D);
+
+/**
  * @brief Fonction de remplissage de l'arrière plan
- * @param f Nom du fichier de sortie
+ * @param f Flux
  * @param width Largeur
  * @param height Hauteur
  */
@@ -29,7 +40,7 @@ void fillBg(FILE *f, int width, int height);
 
 /**
  * @brief Fonction de dessin d'une ligne entre deux points
- * @param f Nom du fichier de sortie
+ * @param f Flux
  * @param x1 Coordonnée x du premier point
  * @param y1 Coordonnée y du premier point
  * @param x2 Coordonnée x du deuxième point
@@ -39,7 +50,7 @@ void drawLine(FILE * f, int x1, int y1, int x2, int y2);
 
 /**
  * @brief Fonction de dessin d'un cercle
- * @param f Nom du fichier de sortie
+ * @param f Flux
  * @param x Coordonnée x du cercle
  * @param y Coordonnée y du cercle
  * @param diameter Diamètre du cercle
@@ -47,14 +58,34 @@ void drawLine(FILE * f, int x1, int y1, int x2, int y2);
 void drawCircle(FILE * f, int x, int y, float diameter);
 
 /**
+ * @brief Fonction de remplissage d'un cercle
+ * @param f Flux
+ * @param x Coordonnée x du cercle
+ * @param y Coordonnée y du cercle
+ * @param diameter Diamètre du cercle
+ * @param r Composante rouge
+ * @param g Composante verte
+ * @param b Composante bleue
+ */
+void fillCircle(FILE * f, int x, int y, float diameter, float r, float g,
+		float b);
+
+/**
+ * Fonction de définition de la largeur d'une ligne
+ * @param f Flux
+ * @param width
+ */
+void setLineWidth(FILE *f, float width);
+
+/**
  * @brief Fonction de définition des paramètres de sortie du fichier PostScript
- * @param f Nom du fichier de sortie
+ * @param f Flux
  */
 void setCustomParamPostscript(FILE * f);
 
 /**
  * @brief Fonction qui définit la couleur courante avec les composantes RGB
- * @param f Nom du fichier de sortie
+ * @param f Flux
  * @param r Composante rouge (en pourcentage)
  * @param g Composante verte (en pourcentage)
  * @param b Composante bleu (en pourcentage)
