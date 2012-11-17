@@ -195,12 +195,16 @@ Graphe * lectureGraphe(FILE * f) {
 		subStringLeft = strtok(buffer, " ");
 		subStringCenter = strtok(NULL, " ");
 		subStringRight = strtok(NULL, "\0");
-		int numeroSrc = scanInt(subStringLeft);
-		G->sommets[numeroSrc]->voisins = ajouterAreteEnQueue(
-				G->sommets[numeroSrc]->voisins,
-				creerArete(G->sommets[numeroSrc],
-						G->sommets[scanInt(subStringCenter)],
-						scanInt(subStringRight)));
+		int sommetA = scanInt(subStringLeft);
+		int sommetB = scanInt(subStringCenter);
+		int poids = scanInt(subStringRight);
+		G->sommets[sommetA]->voisins = ajouterAreteEnQueue(
+				G->sommets[sommetA]->voisins,
+				creerArete(G->sommets[sommetA], G->sommets[sommetB], poids));
+		G->sommets[sommetB]->voisins = ajouterAreteEnQueue(
+				G->sommets[sommetB]->voisins,
+				creerArete(G->sommets[sommetB], G->sommets[sommetA], poids));
+
 	}
 	return G;
 }
