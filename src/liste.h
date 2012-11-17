@@ -53,7 +53,7 @@ void freeListe(Liste * list);
  * @brief Fonction d'affichage textuel de la liste
  * @param list Liste à afficher
  */
-void display(Liste * list);
+void displayListe(Liste * list);
 
 
 /* primitives required */
@@ -61,31 +61,31 @@ void display(Liste * list);
  * @brief Fonction d'initialisation d'une liste
  * @return Liste initialisée
  */
-Liste * initialiser();
+Liste * initialiserListe();
 /**
  * Fonction qui teste si la liste est vide
  * @param list Liste
  * @return 1 si la liste est vide, sinon 0
  */
-int est_vide(Liste * list);
+int estVideListe(Liste * list);
 /**
  * Fonction d'ajout d'un élément à la liste
  * @param list Liste
  * @param x Sommet à ajouter
  * @param l Longueur associé
  */
-void ajouter(Liste * list, Sommet * x, int l);
+void ajouterElementListe(Liste * list, Sommet * x, int l);
 /**
  * Fonction de suppression d'un élément contenant un sommet précisé
  * @param list Liste
  * @param x Sommet à supprimer de la liste
  */
-void supprimer(Liste * list, Sommet * x);
+void supprimerElementListe(Liste * list, Sommet * x);
 /**
  * @brief Fonction de récupération du minimum dans la liste
  * @param list Liste
  * @return Adresse vers l'élément minimum
  */
-Element * recup_min(Liste * list);
+Element * recupMinListe(Liste * list);
 
 #endif /* LISTE_H_ */
