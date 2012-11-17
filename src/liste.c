@@ -35,7 +35,7 @@ void freeListe(Liste * list) {
 
 void displayListe(Liste * list) {
 	if (!list) {
-		fprintf(stderr, "display : liste non initialisée");
+		fprintf(stderr, "displayListe : liste non initialisée");
 		return;
 	}
 	Element * current = list->hd;
@@ -57,7 +57,7 @@ int estVideListe(Liste * list) {
 
 void ajouterElementListe(Liste * list, Sommet * x, int l) {
 	if (!list) {
-		fprintf(stderr, "ajouter : liste non initialisée");
+		fprintf(stderr, "ajouterElementListe : liste non initialisée");
 		return;
 	}
 	Element * e = creerElement(x, l);
@@ -84,7 +84,32 @@ void ajouterElementListe(Liste * list, Sommet * x, int l) {
 
 void supprimerElementListe(Liste * list, Sommet * x) {
 	if (!list) {
-		fprintf(stderr, "supprimer : liste non initialisée");
+		fprintf(stderr, "supprimerElementListe : liste non initialisée");
+		return;
+	}
+	if (list->hd->x == x) {
+		Element * mem = list->hd;
+		list->hd = list->hd->next;
+		free(mem);
+		return;
+	}
+	Element * previous = list->hd;
+	Element * current = previous->next;
+	while (current) {
+		if (current->x == x) {
+			previous->next = current->next;
+			free(current);
+			return;
+		}
+		previous = current;
+		current = current->next;
+
+	}
+}
+
+void supprimerElementListeMem(Liste * list, Sommet * x) {
+	if (!list) {
+		fprintf(stderr, "supprimerElementListeMem : liste non initialisée");
 		return;
 	}
 
@@ -107,11 +132,11 @@ void supprimerElementListe(Liste * list, Sommet * x) {
 
 Element * recupMinListe(Liste * list) {
 	if (!list) {
-		fprintf(stderr, "recup_min : liste non initialisée");
+		fprintf(stderr, "recupMinListe : liste non initialisée");
 		return NULL ;
 	}
 	Element * rem = list->hd;
-	supprimerElementListe(list, list->hd->x);
+	supprimerElementListeMem(list, list->hd->x);
 	rem->next = NULL;
 	return rem;
 }

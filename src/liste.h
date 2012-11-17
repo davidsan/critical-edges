@@ -81,6 +81,8 @@ void ajouterElementListe(Liste * list, Sommet * x, int l);
  * @param x Sommet à supprimer de la liste
  */
 void supprimerElementListe(Liste * list, Sommet * x);
+
+void supprimerElementListeMem(Liste * list, Sommet * x);
 /**
  * @brief Fonction de récupération du minimum dans la liste
  * @param list Liste
