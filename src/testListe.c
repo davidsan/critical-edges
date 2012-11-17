@@ -22,5 +22,8 @@ int main(int argc, char **argv) {
 
 	display(l1);
 
+	supprimer(l1, s5);
+	display(l1);
+
 	return 0;
 }

@@ -44,7 +44,7 @@ void display(Liste * list) {
 				current->x->y, current->l);
 		current = current->next;
 	}
-
+	printf("\n");
 }
 
 Liste * initialiser() {
@@ -87,9 +87,9 @@ void supprimer(Liste * list, Sommet * x) {
 		fprintf(stderr, "supprimer : liste non initialisée");
 		return;
 	}
-	Element * rem = NULL;
+
 	if (list->hd->x == x) {
-		rem = list->hd;
+		Element * rem = list->hd;
 		list->hd = list->hd->next;
 		free(rem);
 		return;
@@ -102,7 +102,9 @@ void supprimer(Liste * list, Sommet * x) {
 			free(current);
 			return;
 		}
+		previous = current;
 		current = current->next;
+
 	}
 }
 
