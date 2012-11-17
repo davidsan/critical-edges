@@ -22,20 +22,20 @@ typedef struct dijkstra {
 } Dijkstra;
 
 /**
- * Fonction d'allocation de Dijkstra
+ * @brief Fonction d'allocation de Dijkstra
  * @param size Taille des tableaux
  * @return Adresse vers l'instance de type Dijkstra allouée
  */
 Dijkstra* creerDijkstra(int size);
 
 /**
- * Fonction de désallocation de Dijkstra
+ * @brief Fonction de désallocation de Dijkstra
  * @param d Adresse vers une instance de type Dijkstra à désallouer
  */
 void freeDijkstra(Dijkstra* d);
 
 /**
- * Fonction Dijkstra utilisant une liste en tant que bordure
+ * @brief Fonction Dijkstra utilisant une liste en tant que bordure
  * @param G Adresse vers un graphe
  * @param r Numéro de la racine
  * @return Adresse vers une instance de type Dijkstra
@@ -43,11 +43,18 @@ void freeDijkstra(Dijkstra* d);
 Dijkstra * dijkstraListe(Graphe * G, int r);
 
 /**
- * Fonction d'extraction du plus court chemin
- * @param G
- * @param D
- * @return
+ * @brief Fonction d'extraction du plus court chemin
+ * @param G Adresse vers un graphe
+ * @param D Adresse vers une instance de type Dijkstra
+ * @return Liste d'arête composé du plus court chemin entre s et t (défini dans G)
  */
 Arete * extractSP(Graphe * G, Dijkstra *D);
+
+/**
+ * @brief Fonction de calcul du coût d'un chemin
+ * @param l Liste d'arêtes
+ * @return Le coût du chemin
+ */
+int calculCout(Arete * l);
 
 #endif /* DIJKSTRA_H_ */

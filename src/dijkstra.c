@@ -83,3 +83,13 @@ Arete * extractSP(Graphe * G, Dijkstra *D) {
 	}
 	return res;
 }
+
+int calculCout(Arete * l) {
+	Arete * current = l;
+	int cout = 0;
+	while (current) {
+		cout += current->poids;
+		current = current->suivant;
+	}
+	return cout;
+}
