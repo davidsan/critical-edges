@@ -6,7 +6,7 @@
 #include "liste.h"
 
 int main(int argc, char **argv) {
-	Liste * l1 = initialiser();
+	Liste * l1 = initialiserListe();
 
 	Sommet * s1 = creerSommet(0, 0, 0);
 	Sommet * s2 = creerSommet(1, 1, 1);
@@ -14,21 +14,21 @@ int main(int argc, char **argv) {
 	Sommet * s4 = creerSommet(3, 3, 3);
 	Sommet * s5 = creerSommet(4, 4, 4);
 
-	ajouter(l1, s2, 2);
-	ajouter(l1, s1, 1);
-	ajouter(l1, s4, 4);
-	ajouter(l1, s3, 3);
-	ajouter(l1, s5, 5);
+	ajouterElementListe(l1, s2, 2);
+	ajouterElementListe(l1, s1, 1);
+	ajouterElementListe(l1, s4, 4);
+	ajouterElementListe(l1, s3, 3);
+	ajouterElementListe(l1, s5, 5);
 
-	display(l1);
+	displayListe(l1);
 
-	supprimer(l1, s5);
-	display(l1);
+	supprimerElementListe(l1, s5);
+	displayListe(l1);
 
-	printf("recup min : %d\n", recup_min(l1)->l);
-	display(l1);
-	printf("recup min : %d\n", recup_min(l1)->l);
-	display(l1);
+	printf("recup min : %d\n", recupMinListe(l1)->l);
+	displayListe(l1);
+	printf("recup min : %d\n", recupMinListe(l1)->l);
+	displayListe(l1);
 
 	return 0;
 }
