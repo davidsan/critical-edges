@@ -2,9 +2,9 @@ CC = gcc
 CFLAGS = -Wall
 LDFLAGS = -lm
 RM = rm -f
-SRC = reader.c graph.c scanner.c postscript.c
+SRC = reader.c graph.c scanner.c postscript.c liste.c
 OBJ = $(SRC:.c=.o)
-EXEC = main convertPostscript
+EXEC = main convertPostscript testListe
 
 
 all: $(EXEC)
