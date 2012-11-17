@@ -89,9 +89,7 @@ void supprimer(Liste * list, Sommet * x) {
 	}
 
 	if (list->hd->x == x) {
-		Element * rem = list->hd;
 		list->hd = list->hd->next;
-		free(rem);
 		return;
 	}
 	Element * previous = list->hd;
@@ -99,7 +97,6 @@ void supprimer(Liste * list, Sommet * x) {
 	while (current) {
 		if (current->x == x) {
 			previous->next = current->next;
-			free(current);
 			return;
 		}
 		previous = current;
@@ -113,6 +110,8 @@ Element * recup_min(Liste * list) {
 		fprintf(stderr, "recup_min : liste non initialisée");
 		return NULL ;
 	}
-	return list->hd;
+	Element * rem = list->hd;
+	supprimer(list, list->hd->x);
+	return rem;
 }
 
