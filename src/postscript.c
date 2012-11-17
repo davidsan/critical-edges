@@ -49,13 +49,17 @@ void writeGraphe(char * filename, Graphe * G) {
 
 	// écriture des aretes
 	setAreteColor(f);
-	curseur = G->aretes;
-	while (curseur != NULL ) {
-		drawLine(f, border + minX * coefA4x + (int) (curseur->s1->x * coefA4x),
-				border + minY * coefA4y + (int) (curseur->s1->y * coefA4y),
-				border + minX * coefA4x + (int) (curseur->s2->x * coefA4x),
-				border + minY * coefA4y + (int) (curseur->s2->y * coefA4y));
-		curseur = curseur->suivant;
+
+	for (i = 0; i < G->nbSommets; i++) {
+		curseur = G->sommets[i]->voisins;
+		while (curseur != NULL ) {
+			drawLine(f,
+					border + minX * coefA4x + (int) (curseur->s1->x * coefA4x),
+					border + minY * coefA4y + (int) (curseur->s1->y * coefA4y),
+					border + minX * coefA4x + (int) (curseur->s2->x * coefA4x),
+					border + minY * coefA4y + (int) (curseur->s2->y * coefA4y));
+			curseur = curseur->suivant;
+		}
 	}
 
 	// écriture des sommets

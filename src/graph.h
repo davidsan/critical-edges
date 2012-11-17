@@ -19,6 +19,7 @@ typedef struct sommet {
 	int numero; /*!< Numéro du sommet */
 	int x; /*!< Coordonnée x du sommet */
 	int y; /*!< Coordonnée y du sommet */
+	struct arete * voisins;
 } Sommet;
 
 /**
@@ -26,8 +27,8 @@ typedef struct sommet {
  * Structure d'une arête
  */
 typedef struct arete {
-	Sommet * s1; /*!< Sommet s1 */
-	Sommet * s2; /*!< Sommet s2 */
+	struct sommet * s1; /*!< Sommet s1 */
+	struct sommet * s2; /*!< Sommet s2 */
 	int poids; /*!< Poids de l'arete (s1, s2) */
 	struct arete * suivant; /*!< Pointeur sur l'arete suivante */
 } Arete;
@@ -41,18 +42,8 @@ typedef struct graphe {
 	int nbAretes; /*!< Nombre d'aretes */
 	int s; /*!< Numéro du sommet de départ */
 	int t; /*!< Numéro du sommet d'arrivée */
-	Sommet ** sommets; /*!< Tableau de sommets */
-	Arete * aretes; /*!< Liste chainée d'aretes */
+	struct sommet ** sommets; /*!< Tableau de sommets */
 } Graphe;
-
-/**
- * @brief Fonction de création d'un sommet
- * @param x Ordonnée
- * @param y Abscisse
- * @param numero Numéro
- * @return Adresse de la nouvelle instance allouée de type Sommet
- */
-Sommet * creerSommet(int x, int y, int numero);
 
 /**
  * @brief Fonction de création d'une arête
@@ -62,6 +53,15 @@ Sommet * creerSommet(int x, int y, int numero);
  * @return Adresse de la nouvelle instance allouée de type Arete
  */
 Arete * creerArete(Sommet * s1, Sommet * s2, int poids);
+
+/**
+ * @brief Fonction de création d'un sommet
+ * @param x Ordonnée
+ * @param y Abscisse
+ * @param numero Numéro
+ * @return Adresse de la nouvelle instance allouée de type Sommet
+ */
+Sommet * creerSommet(int x, int y, int numero);
 
 /**
  * @brief Fonction de création d'un graphe
@@ -80,16 +80,16 @@ Graphe * creerGraphe(int nbSommets, int nbAretes);
 void initGraphe(Graphe * G, int s, int t);
 
 /**
- * @brief Fonction de désallocation d'un sommet
- * @param s Sommet à désallouer
- */
-void freeSommet(Sommet * s);
-
-/**
  * @brief Fonction de désallocation d'une arête
  * @param a Arete à désallouer
  */
 void freeArete(Arete * a);
+
+/**
+ * @brief Fonction de désallocation d'un sommet
+ * @param s Sommet à désallouer
+ */
+void freeSommet(Sommet * s);
 
 /**
  * @brief Fonction de désallocation d'un graphe

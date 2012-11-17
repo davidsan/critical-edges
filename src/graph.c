@@ -37,9 +37,7 @@ Graphe * creerGraphe(int nbSommets, int nbAretes) {
 	}
 	new->nbSommets = nbSommets;
 	new->nbAretes = nbAretes;
-
 	new->sommets = (Sommet **) malloc(sizeof(Sommet*) * nbSommets);
-	new->aretes = NULL;
 	return new;
 }
 
@@ -53,6 +51,7 @@ void initGraphe(Graphe * G, int s, int t) {
 }
 
 void freeSommet(Sommet * s) {
+	freeArete(s->voisins);
 	free(s);
 }
 
@@ -70,7 +69,6 @@ void freeGraphe(Graphe * G) {
 			freeSommet(G->sommets[i]);
 		}
 		free(G->sommets);
-		freeArete(G->aretes);
 		free(G);
 	}
 }
@@ -138,7 +136,9 @@ void afficheGraphe(Graphe * G) {
 	for (i = 0; i < G->nbSommets; i++) {
 		afficheSommet(G->sommets[i]);
 	}
-	afficheAretes(G->aretes);
+	for (i = 0; i < G->nbSommets; i++) {
+		afficheAretes(G->sommets[i]->voisins);
+	}
 }
 
 Graphe * lectureGrapheInit(FILE * f) {
@@ -195,8 +195,10 @@ Graphe * lectureGraphe(FILE * f) {
 		subStringLeft = strtok(buffer, " ");
 		subStringCenter = strtok(NULL, " ");
 		subStringRight = strtok(NULL, "\0");
-		G->aretes = ajouterAreteEnQueue(G->aretes,
-				creerArete(G->sommets[scanInt(subStringLeft)],
+		int numeroSrc = scanInt(subStringLeft);
+		G->sommets[numeroSrc]->voisins = ajouterAreteEnQueue(
+				G->sommets[numeroSrc]->voisins,
+				creerArete(G->sommets[numeroSrc],
 						G->sommets[scanInt(subStringCenter)],
 						scanInt(subStringRight)));
 	}
