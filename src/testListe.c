@@ -25,5 +25,10 @@ int main(int argc, char **argv) {
 	supprimer(l1, s5);
 	display(l1);
 
+	printf("recup min : %d\n", recup_min(l1)->l);
+	display(l1);
+	printf("recup min : %d\n", recup_min(l1)->l);
+	display(l1);
+
 	return 0;
 }
