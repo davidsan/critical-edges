@@ -13,6 +13,7 @@ Sommet * creerSommet(int numero, int x, int y) {
 	new->numero = numero;
 	new->x = x;
 	new->y = y;
+	new->voisins = NULL;
 	return new;
 }
 
@@ -204,7 +205,6 @@ Graphe * lectureGraphe(FILE * f) {
 		G->sommets[sommetB]->voisins = ajouterAreteEnQueue(
 				G->sommets[sommetB]->voisins,
 				creerArete(G->sommets[sommetB], G->sommets[sommetA], poids));
-
 	}
 	return G;
 }
