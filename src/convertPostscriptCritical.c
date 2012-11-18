@@ -1,6 +1,6 @@
 /**
- * \file convertPostscript.c
- * \brief Programme de conversion d'un ou plusieurs graphes vers PostScript
+ * \file convertPostscriptCrtiical
+ * \brief Programme de conversion d'un ou plusieurs graphes avec calcul de l'arête vitale vers PostScript
  * \author David San
  */
 
@@ -9,6 +9,8 @@
 #include "reader.h"
 #include "graph.h"
 #include "postscript.h"
+#include "dijkstra.h"
+#include "solver.h"
 
 int main(int argc, char **argv) {
 
@@ -18,7 +20,7 @@ int main(int argc, char **argv) {
 	char *filename = NULL;
 
 	if (argc < 2) {
-		fprintf(stderr, "Usage : ./convertPostscript file.gph ...\n");
+		fprintf(stderr, "Usage : ./convertPostscriptCritical file.gph ...\n");
 		return 1;
 	}
 	int i;
@@ -30,11 +32,18 @@ int main(int argc, char **argv) {
 		filename = strtok(filename, ".");
 		filename = strcat(filename, ".ps");
 		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
+		Dijkstra * D = dijkstraListe(G, G->s);
+		Arete * sp = extractSP(G, D);
+		Arete * vitale = solveListe(G, sp);
 
 		output = ouvrirFichierWrite(filename);
 		writeGraphe(output, G);
+		writeDijkstra(output, G, sp);
+		writeAreteVitale(output, vitale);
 		fermerFichier(output);
 
+		freeArete(sp);
+		freeDijkstra(D);
 		fprintf(stderr, "Done.\n");
 		freeGraphe(G);
 		if (f) {
@@ -43,6 +52,7 @@ int main(int argc, char **argv) {
 	}
 
 	fprintf(stderr, "All tasks completed.\n");
+	free(filename);
 	return 0;
 
 }

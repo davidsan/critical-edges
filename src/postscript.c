@@ -6,16 +6,19 @@
 
 #include "postscript.h"
 
-void writeGraphe(char * filename, Graphe * G) {
-	FILE * f = NULL;
-	Arete * curseur = NULL;
+int minX = INT_MAX, minY = INT_MAX;
+float coefA4x = DPI_A4_X, coefA4y = DPI_A4_Y;
+
+void writeGraphe(FILE * f, Graphe * G) {
+	Arete * current = NULL;
 	int i;
-	float diameter = 1.5;
-	float coefA4x = DPI_A4_X, coefA4y = DPI_A4_Y;
-	float dimX = 0, dimY = 0;
-	int minX = INT_MAX, minY = INT_MAX;
-	// ouverture fichier
-	f = ouvrirFichierWrite(filename);
+	float dimX = 0;
+	float dimY = 0;
+	coefA4x = DPI_A4_X;
+	coefA4y = DPI_A4_Y;
+	minX = INT_MAX;
+	minY = INT_MAX;
+
 	for (i = 0; i < G->nbSommets; i++) {
 		if (dimX < G->sommets[i]->x) {
 			dimX = G->sommets[i]->x;
@@ -42,14 +45,14 @@ void writeGraphe(char * filename, Graphe * G) {
 	// écriture des aretes
 	setAreteColor(f);
 	for (i = 0; i < G->nbSommets; i++) {
-		curseur = G->sommets[i]->voisins;
-		while (curseur != NULL ) {
+		current = G->sommets[i]->voisins;
+		while (current != NULL ) {
 			drawLine(f,
-					BORDER + minX * coefA4x + (int) (curseur->s1->x * coefA4x),
-					BORDER + minY * coefA4y + (int) (curseur->s1->y * coefA4y),
-					BORDER + minX * coefA4x + (int) (curseur->s2->x * coefA4x),
-					BORDER + minY * coefA4y + (int) (curseur->s2->y * coefA4y));
-			curseur = curseur->suivant;
+					BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
+					BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
+					BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
+					BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y));
+			current = current->suivant;
 		}
 	}
 	// écriture des sommets
@@ -57,98 +60,59 @@ void writeGraphe(char * filename, Graphe * G) {
 		drawCircle(f,
 				BORDER + minX * coefA4x + (int) (G->sommets[i]->x * coefA4x),
 				BORDER + minY * coefA4y + (int) (G->sommets[i]->y * coefA4y),
-				diameter);
+				DIAMETER);
 	}
-	// fermeture fichier
-	fermerFichier(f);
 }
 
-void writeGrapheDijkstra(char * filename, Graphe * G, Arete * sp) {
-	FILE * f = NULL;
-	Arete * curseur = NULL;
-	int i;
-	float diameter = 1.5;
-	float coefA4x = DPI_A4_X, coefA4y = DPI_A4_Y;
-	float dimX = 0, dimY = 0;
-	int minX = INT_MAX, minY = INT_MAX;
-	// ouverture fichier
-	f = ouvrirFichierWrite(filename);
-	for (i = 0; i < G->nbSommets; i++) {
-		if (dimX < G->sommets[i]->x) {
-			dimX = G->sommets[i]->x;
-		}
-		if (dimY < G->sommets[i]->y) {
-			dimY = G->sommets[i]->y;
-		}
-		if (minX > G->sommets[i]->x) {
-			minX = G->sommets[i]->x;
-		}
-		if (minY > G->sommets[i]->y) {
-			minY = G->sommets[i]->y;
-		}
-	}
-	minX *= -1;
-	minY *= -1;
-	dimX += minX;
-	dimY += minY;
-	coefA4x = (float) (coefA4x - BORDER * 2) / dimX;
-	coefA4y = (float) (coefA4y - BORDER * 2) / dimY;
-	// écriture du graphe
-	setCustomParamPostscript(f);
-	fillBg(f, DPI_A4_X, DPI_A4_Y);
-	// écriture des aretes
-	setAreteColor(f);
-	for (i = 0; i < G->nbSommets; i++) {
-		curseur = G->sommets[i]->voisins;
-		while (curseur != NULL ) {
-			drawLine(f,
-					BORDER + minX * coefA4x + (int) (curseur->s1->x * coefA4x),
-					BORDER + minY * coefA4y + (int) (curseur->s1->y * coefA4y),
-					BORDER + minX * coefA4x + (int) (curseur->s2->x * coefA4x),
-					BORDER + minY * coefA4y + (int) (curseur->s2->y * coefA4y));
-			curseur = curseur->suivant;
-		}
-	}
-	// écriture des sommets
-	for (i = 0; i < G->nbSommets; i++) {
-		drawCircle(f,
-				BORDER + minX * coefA4x + (int) (G->sommets[i]->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (G->sommets[i]->y * coefA4y),
-				diameter);
-	}
-
+void writeDijkstra(FILE * f, Graphe * G, Arete * sp) {
 	// écriture du sommet src en vert
 	fillCircle(f,
 			BORDER + minX * coefA4x + (int) (G->sommets[G->s]->x * coefA4x),
 			BORDER + minY * coefA4y + (int) (G->sommets[G->s]->y * coefA4y),
-			diameter + 0.5, 0.0, 1.0, 0.0);
+			DIAMETER + 0.5, 0.0, 1.0, 0.0);
 	// écriture du sommet dest en rouge
 	fillCircle(f,
 			BORDER + minX * coefA4x + (int) (G->sommets[G->t]->x * coefA4x),
 			BORDER + minY * coefA4y + (int) (G->sommets[G->t]->y * coefA4y),
-			diameter + 0.5, 1.0, 0.0, 0.0);
-	// écriture du + court chemin raliant src à dest
-	curseur = sp;
-	while (curseur) {
+			DIAMETER + 0.5, 1.0, 0.0, 0.0);
+
+	// écriture du + court chemin reliant src à dest
+	Arete * current = sp;
+	while (current) {
 		setWhite(f);
-		setLineWidth(f, 0.5);
-		drawLine(f, BORDER + minX * coefA4x + (int) (curseur->s1->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (curseur->s1->y * coefA4y),
-				BORDER + minX * coefA4x + (int) (curseur->s2->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (curseur->s2->y * coefA4y));
-		setLineWidth(f, 0.1);
+		setLineWidth(f, 1);
+		drawLine(f, BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
+				BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
+				BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
+				BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y));
+
 		drawCircle(f,
-				BORDER + minX * coefA4x + (int) (curseur->s1->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (curseur->s1->y * coefA4y),
-				diameter + 0.5);
+				BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
+				BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
+				DIAMETER + 1);
 		drawCircle(f,
-				BORDER + minX * coefA4x + (int) (curseur->s2->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (curseur->s2->y * coefA4y),
-				diameter + 0.5);
-		curseur = curseur->suivant;
+				BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
+				BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y),
+				DIAMETER + 1);
+		current = current->suivant;
 	}
-	// fermeture fichier
-	fermerFichier(f);
+
+}
+
+void writeAreteVitale(FILE * f, Arete * vitale) {
+	setRed(f);
+	drawLine(f, BORDER + minX * coefA4x + (int) (vitale->s1->x * coefA4x),
+			BORDER + minY * coefA4y + (int) (vitale->s1->y * coefA4y),
+			BORDER + minX * coefA4x + (int) (vitale->s2->x * coefA4x),
+			BORDER + minY * coefA4y + (int) (vitale->s2->y * coefA4y));
+
+	drawCircle(f, BORDER + minX * coefA4x + (int) (vitale->s1->x * coefA4x),
+			BORDER + minY * coefA4y + (int) (vitale->s1->y * coefA4y),
+			DIAMETER + 1);
+	drawCircle(f, BORDER + minX * coefA4x + (int) (vitale->s2->x * coefA4x),
+			BORDER + minY * coefA4y + (int) (vitale->s2->y * coefA4y),
+			DIAMETER + 1);
+
 }
 
 void fillBg(FILE *f, int width, int height) {
@@ -174,7 +138,7 @@ void drawCircle(FILE * f, int x, int y, float diameter) {
 	fprintf(f, "%d %d %f 0 360 arc closepath\n", x, y, diameter + 0.5);
 	fprintf(f, "fill\n");
 	fprintf(f, "stroke\n");
-	setWhite(f);
+	setRGBColor(f, 1, 1, 1);
 	fprintf(f, "%d %d %f 0 360 arc closepath\n", x, y, diameter);
 	fprintf(f, "fill\n");
 	fprintf(f, "stroke\n");
@@ -182,7 +146,11 @@ void drawCircle(FILE * f, int x, int y, float diameter) {
 
 void fillCircle(FILE * f, int x, int y, float diameter, float r, float g,
 		float b) {
-	setBlack(f);
+	if (r + g + b < 1.5) {
+		setWhite(f);
+	} else {
+		setBlack(f);
+	}
 	fprintf(f, "%d %d %f 0 360 arc closepath\n", x, y, diameter + 0.5);
 	fprintf(f, "fill\n");
 	fprintf(f, "stroke\n");
@@ -226,7 +194,7 @@ void setBlue(FILE * f) {
 }
 
 void setLightBlue(FILE *f) {
-	setRGBColor(f, 19.0 / 256, 51.0 / 256, 253.0 / 256);
+	setRGBColor(f, 19. / 256, 51. / 256, 253. / 256);
 }
 
 void setDarkBlue(FILE *f) {
@@ -240,5 +208,5 @@ void setAreteColor(FILE *f) {
 
 void setBgColor(FILE *f) {
 	setDarkBlue(f);
-	//setWhite(f);
+	// setWhite(f);
 }

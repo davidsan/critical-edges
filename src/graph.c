@@ -208,3 +208,23 @@ Graphe * lectureGraphe(FILE * f) {
 	}
 	return G;
 }
+
+void switchArete(Graphe * G, Arete * A) {
+	Arete * current = NULL;
+	current = G->sommets[A->s1->numero]->voisins;
+	while (current) {
+		if (current->s2 == A->s2) {
+			current->poids = -current->poids;
+			break;
+		}
+		current = current->suivant;
+	}
+	current = G->sommets[A->s2->numero]->voisins;
+	while (current) {
+		if (current->s1 == A->s1) {
+			current->poids = -current->poids;
+			break;
+		}
+		current = current->suivant;
+	}
+}

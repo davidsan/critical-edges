@@ -10,6 +10,7 @@
 #define DPI_A4_X 842
 #define DPI_A4_Y 595
 #define BORDER 20
+#define DIAMETER 1.5
 
 #include <limits.h>
 #include "graph.h"
@@ -17,18 +18,25 @@
 
 /**
  * @brief Fonction de conversion d'un graphe vers une réprésentation graphique PostScript
- * @param filename Nom du fichier de sortie
- * @param G Adresse du graphe
+ * @param f Flux
+ * @param G Adresse d'un graphe
  */
-void writeGraphe(char * filename, Graphe * G);
+void writeGraphe(FILE * f, Graphe * G);
 
 /**
- * @brief Fonction de conversion d'un graphe vers une réprésentation graphique PostScript
- * @param filename Nom du fichier de sortie
- * @param G Adresse du graphe
- * &param D Adresse de la liste des arêtes
+ * @brief Fonction de dessin du plus court chemin du graphe
+ * @param f Flux
+ * @param G Adresse d'un graphe
+ * @param sp Adresse vers la liste des arêtes
  */
-void writeGrapheDijkstra(char * filename, Graphe *G, Arete * D);
+void writeDijkstra(FILE * f, Graphe * G, Arete * sp);
+
+/**
+ * @brief Fonction de dessin de l'arête vitale
+ * @param f Flux
+ * @param vitale Adresse de l'arête vitale
+ */
+void writeAreteVitale(FILE * f, Arete * vitale);
 
 /**
  * @brief Fonction de remplissage de l'arrière plan

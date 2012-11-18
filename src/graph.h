@@ -159,4 +159,11 @@ Graphe * lectureGrapheInit(FILE * f);
  */
 Graphe * lectureGraphe(FILE * f);
 
+/**
+ * @brief Fonction qui active ou désactive une arête en la multipliant par -1, les arêtes de coût négatifs sont ignorées.
+ * @param G Adresse vers un graphe
+ * @param A Adresse vers une arête (cette arête n'est pas celle du graphe, mais une copie)
+ */
+void switchArete(Graphe * G, Arete * A);
+
 #endif

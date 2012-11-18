@@ -43,6 +43,11 @@ Dijkstra * dijkstraListe(Graphe * G, int r) {
 		freeElement(min);
 		while (voisin) {
 			int y = voisin->s2->numero;
+			if (voisin->poids < 0) {
+				/* Les arêtes de poids négatives sont ignorés */
+				voisin = voisin->suivant;
+				continue;
+			}
 			if (pred[y] == NULL ) {
 				testcpt++;
 				dist[y] = dist[x] + voisin->poids;
@@ -78,9 +83,11 @@ Arete * extractSP(Graphe * G, Dijkstra *D) {
 		cursor = D->pred[cursor->s1->numero];
 	}
 	// printf("\n");
-	if (!res) {
-		fprintf(stderr, "Pas de chemin trouvé.\n");
-	}
+	/*
+	 if (!res) {
+	 fprintf(stderr, "Pas de chemin trouvé.\n");
+	 }
+	 */
 	return res;
 }
 

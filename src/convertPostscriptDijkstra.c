@@ -13,6 +13,7 @@
 int main(int argc, char **argv) {
 
 	FILE * f = NULL;
+	FILE * output = NULL;
 	Graphe * G = NULL;
 	char *filename = NULL;
 
@@ -31,7 +32,12 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
 		Dijkstra * D = dijkstraListe(G, G->s);
 		Arete * sp = extractSP(G, D);
-		writeGrapheDijkstra(filename, G, sp);
+
+		output = ouvrirFichierWrite(filename);
+		writeGraphe(output, G);
+		writeDijkstra(output, G, sp);
+		fermerFichier(output);
+
 		freeArete(sp);
 		freeDijkstra(D);
 		fprintf(stderr, "Done.\n");
