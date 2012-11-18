@@ -35,7 +35,6 @@ Dijkstra * dijkstraListe(Graphe * G, int r) {
 	dist[r] = 0;
 	pred[r] = NULL;
 
-	int testcpt = 0;
 	while (!estVideListe(l)) {
 		Element * min = recupMinListe(l);
 		Arete * voisin = min->x->voisins;
@@ -49,7 +48,6 @@ Dijkstra * dijkstraListe(Graphe * G, int r) {
 				continue;
 			}
 			if (pred[y] == NULL ) {
-				testcpt++;
 				dist[y] = dist[x] + voisin->poids;
 				pred[y] = voisin;
 				ajouterElementListe(l, G->sommets[y], dist[y]);
