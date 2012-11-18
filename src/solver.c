@@ -18,9 +18,10 @@ Arete * solveListe(Graphe * G, Arete * sp) {
 			coutVitale = cout;
 			vitale = current;
 		}
-
 		// réactiver l'arête courante
 		switchArete(G, current);
+		freeArete(path);
+		freeDijkstra(D);
 		current = current->suivant;
 	}
 	fprintf(stdout, "Cout engendré par l'arête vitale : %d\n", coutVitale);
