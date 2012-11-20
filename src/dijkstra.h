@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include "graph.h"
 #include "liste.h"
+#include "heap.h"
 
 /**
  * @struct Dijkstra
@@ -50,11 +51,12 @@ Dijkstra * dijkstraListe(Graphe * G, int r);
  */
 Arete * extractSP(Graphe * G, Dijkstra *D);
 
-/**
- * @brief Fonction de calcul du coût d'un chemin
- * @param l Liste d'arêtes
- * @return Le coût du chemin
- */
-int calculCout(Arete * l);
 
+/**
+ * @brief Fonction Dijkstra utilisant un tas en tant que bordure
+ * @param G Adresse vers un graphe
+ * @param r Numéro de la racine
+ * @return Adresse vers une instance de type Dijkstra
+ */
+Dijkstra * dijkstraTas(Graphe * G, int r);
 #endif /* DIJKSTRA_H_ */

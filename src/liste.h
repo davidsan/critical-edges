@@ -48,13 +48,11 @@ void freeElement(Element * e);
  */
 void freeListe(Liste * list);
 
-
 /**
  * @brief Fonction d'affichage textuel de la liste
  * @param list Liste à afficher
  */
 void displayListe(Liste * list);
-
 
 /* primitives required */
 /**
@@ -78,10 +76,14 @@ void ajouterElementListe(Liste * list, Sommet * x, int l);
 /**
  * Fonction de suppression d'un élément contenant un sommet précisé
  * @param list Liste
- * @param x Sommet à supprimer de la liste
+ * @param x Sommet à supprimer de la liste et de la mémoire
  */
 void supprimerElementListe(Liste * list, Sommet * x);
-
+/**
+ * Fonction de suppression d'un élément contenant un sommet précisé sans l'effacer de la mémoire
+ * @param list Liste
+ * @param x Sommet à supprimer de la liste
+ */
 void supprimerElementListeMem(Liste * list, Sommet * x);
 /**
  * @brief Fonction de récupération du minimum dans la liste

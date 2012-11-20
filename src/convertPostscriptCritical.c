@@ -32,7 +32,10 @@ int main(int argc, char **argv) {
 		filename = strtok(filename, ".");
 		filename = strcat(filename, ".ps");
 		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
-		Dijkstra * D = dijkstraListe(G, G->s);
+		Dijkstra * D = NULL;
+		//	D = dijkstraListe(G, G->s);
+		D = dijkstraTas(G, G->s);
+
 		Arete * sp = extractSP(G, D);
 		Arete * vitale = solveListe(G, sp);
 

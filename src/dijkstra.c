@@ -89,12 +89,49 @@ Arete * extractSP(Graphe * G, Dijkstra *D) {
 	return res;
 }
 
-int calculCout(Arete * l) {
-	Arete * current = l;
-	int cout = 0;
-	while (current) {
-		cout += current->poids;
-		current = current->suivant;
+Dijkstra * dijkstraTas(Graphe * G, int r) {
+	Dijkstra * res = creerDijkstra(G->nbSommets);
+	/* aliases */
+	int * dist = res->dist;
+	Arete ** pred = res->pred;
+	int i;
+	for (i = 0; i < G->nbSommets; ++i) {
+		res->pred[i] = NULL;
 	}
-	return cout;
+	Heap * h = initialiserTas(G->nbSommets);
+	ajouterElementTas(h, G->sommets[r], 0);
+	dist[r] = 0;
+	pred[r] = NULL;
+
+	while (!estVideTas(h)) {
+		HeapNode * min = recupMinTas(h);
+		Arete * voisin = min->x->voisins;
+		int x = min->x->numero;
+		freeHeapNode(min);
+		while (voisin) {
+			int y = voisin->s2->numero;
+			if (voisin->poids < 0) {
+				/* Les arêtes de poids négatives sont ignorés */
+				voisin = voisin->suivant;
+				continue;
+			}
+			if (pred[y] == NULL ) {
+				dist[y] = dist[x] + voisin->poids;
+				pred[y] = voisin;
+
+				ajouterElementTas(h, G->sommets[y], dist[y]);
+			} else {
+				if (dist[y] > dist[x] + voisin->poids) {
+					dist[y] = dist[x] + voisin->poids;
+					pred[y] = voisin;
+					supprimerElementTas(h, G->sommets[y]);
+					ajouterElementTas(h, G->sommets[y], dist[y]);
+				}
+			}
+			voisin = voisin->suivant;
+		}
+	}
+	freeHeap(h);
+	// printf("Dijkstra done.\n");
+	return res;
 }

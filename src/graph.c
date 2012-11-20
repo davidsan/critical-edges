@@ -228,3 +228,13 @@ void switchArete(Graphe * G, Arete * A) {
 		current = current->suivant;
 	}
 }
+
+int calculCout(Arete * l) {
+	Arete * current = l;
+	int cout = 0;
+	while (current) {
+		cout += current->poids;
+		current = current->suivant;
+	}
+	return cout;
+}

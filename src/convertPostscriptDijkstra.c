@@ -7,9 +7,9 @@
 #include <stdio.h>
 #include <libgen.h> /* basename function */
 #include "reader.h"
-#include "graph.h"
-#include "postscript.h"
 #include "dijkstra.h"
+#include "postscript.h"
+
 int main(int argc, char **argv) {
 
 	FILE * f = NULL;
@@ -30,7 +30,10 @@ int main(int argc, char **argv) {
 		filename = strtok(filename, ".");
 		filename = strcat(filename, ".ps");
 		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
-		Dijkstra * D = dijkstraListe(G, G->s);
+		Dijkstra * D = NULL;
+		// D = dijkstraListe(G, G->s);
+		D = dijkstraTas(G, G->s);
+
 		Arete * sp = extractSP(G, D);
 
 		output = ouvrirFichierWrite(filename);

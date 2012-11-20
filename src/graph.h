@@ -166,4 +166,12 @@ Graphe * lectureGraphe(FILE * f);
  */
 void switchArete(Graphe * G, Arete * A);
 
+
+/**
+ * @brief Fonction de calcul du coût d'un chemin
+ * @param l Liste d'arêtes
+ * @return Le coût du chemin
+ */
+int calculCout(Arete * l);
+
 #endif

@@ -44,6 +44,7 @@ void writeGraphe(FILE * f, Graphe * G) {
 	fillBg(f, DPI_A4_X, DPI_A4_Y);
 	// écriture des aretes
 	setAreteColor(f);
+
 	for (i = 0; i < G->nbSommets; i++) {
 		current = G->sommets[i]->voisins;
 		while (current != NULL ) {
@@ -55,6 +56,7 @@ void writeGraphe(FILE * f, Graphe * G) {
 			current = current->suivant;
 		}
 	}
+
 	// écriture des sommets
 	for (i = 0; i < G->nbSommets; i++) {
 		drawCircle(f,
