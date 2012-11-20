@@ -5,7 +5,7 @@
 #include "solver.h"
 
 Arete * solveListe(Graphe * G, Arete * sp) {
-	Arete * vitale = sp;
+	Arete * vitale = NULL;
 	int coutVitale = 0;
 	Arete * current = sp;
 	while (current) {
@@ -14,10 +14,17 @@ Arete * solveListe(Graphe * G, Arete * sp) {
 		Dijkstra * D = dijkstraListe(G, G->s);
 		Arete * path = extractSP(G, D);
 		int cout = calculCout(path);
+
+		if (cout == coutVitale && vitale) {
+			vitale = ajouterAreteEnTete(vitale,
+					creerArete(current->s1, current->s2, current->poids));
+		}
 		if (cout > coutVitale) {
 			coutVitale = cout;
-			vitale = current;
+			freeArete(vitale);
+			vitale = creerArete(current->s1, current->s2, current->poids);
 		}
+
 		// réactiver l'arête courante
 		switchArete(G, current);
 		freeArete(path);
@@ -25,5 +32,9 @@ Arete * solveListe(Graphe * G, Arete * sp) {
 		current = current->suivant;
 	}
 	fprintf(stdout, "Cout engendré par l'arête vitale : %d\n", coutVitale);
+	if (!vitale) {
+		fprintf(stderr, "Pas d'arête vitale trouvé.\n");
+		return NULL ;
+	}
 	return vitale;
 }

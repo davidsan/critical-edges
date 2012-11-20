@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
 		writeAreteVitale(output, vitale);
 		fermerFichier(output);
 
+		freeArete(vitale);
 		freeArete(sp);
 		freeDijkstra(D);
 		fprintf(stderr, "Done.\n");

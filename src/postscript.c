@@ -79,40 +79,50 @@ void writeDijkstra(FILE * f, Graphe * G, Arete * sp) {
 	// écriture du + court chemin reliant src à dest
 	Arete * current = sp;
 	while (current) {
-		setWhite(f);
+		setGreen(f);
 		setLineWidth(f, 1);
 		drawLine(f, BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
 				BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
 				BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
 				BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y));
 
-		drawCircle(f,
-				BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
-				DIAMETER + 1);
-		drawCircle(f,
-				BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
-				BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y),
-				DIAMETER + 1);
+		/*drawCircle(f,
+		 BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
+		 BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
+		 DIAMETER);
+		 drawCircle(f,
+		 BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
+		 BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y),
+		 DIAMETER);*/
 		current = current->suivant;
 	}
 
 }
 
 void writeAreteVitale(FILE * f, Arete * vitale) {
+	if (!vitale) {
+		return;
+	}
+	Arete * current = vitale;
+	int i = 0;
 	setRed(f);
-	drawLine(f, BORDER + minX * coefA4x + (int) (vitale->s1->x * coefA4x),
-			BORDER + minY * coefA4y + (int) (vitale->s1->y * coefA4y),
-			BORDER + minX * coefA4x + (int) (vitale->s2->x * coefA4x),
-			BORDER + minY * coefA4y + (int) (vitale->s2->y * coefA4y));
+	while (current) {
+		i++;
+		drawLine(f, BORDER + minX * coefA4x + (int) (current->s1->x * coefA4x),
+				BORDER + minY * coefA4y + (int) (current->s1->y * coefA4y),
+				BORDER + minX * coefA4x + (int) (current->s2->x * coefA4x),
+				BORDER + minY * coefA4y + (int) (current->s2->y * coefA4y));
 
-	drawCircle(f, BORDER + minX * coefA4x + (int) (vitale->s1->x * coefA4x),
-			BORDER + minY * coefA4y + (int) (vitale->s1->y * coefA4y),
-			DIAMETER + 1);
-	drawCircle(f, BORDER + minX * coefA4x + (int) (vitale->s2->x * coefA4x),
-			BORDER + minY * coefA4y + (int) (vitale->s2->y * coefA4y),
-			DIAMETER + 1);
+		/*drawCircle(f, BORDER + minX * coefA4x + (int) (vitale->s1->x * coefA4x),
+		 BORDER + minY * coefA4y + (int) (vitale->s1->y * coefA4y),
+		 DIAMETER);
+		 drawCircle(f, BORDER + minX * coefA4x + (int) (vitale->s2->x * coefA4x),
+		 BORDER + minY * coefA4y + (int) (vitale->s2->y * coefA4y),
+		 DIAMETER);*/
 
+		current = current->suivant;
+	}
+	fprintf(stdout, "%d arête(s) vitale(s)\n", i);
 }
 
 void fillBg(FILE *f, int width, int height) {
