@@ -43,7 +43,7 @@ Dijkstra * dijkstraListe(Graphe * G, int r) {
 		while (voisin) {
 			int y = voisin->s2->numero;
 			if (voisin->poids < 0) {
-				/* Les arêtes de poids négatives sont ignorés */
+				/* Les arêtes de poids négatifs sont ignorées */
 				voisin = voisin->suivant;
 				continue;
 			}
@@ -63,29 +63,20 @@ Dijkstra * dijkstraListe(Graphe * G, int r) {
 		}
 	}
 	freeListe(l);
-	// printf("Dijkstra done.\n");
 	return res;
 }
 
 Arete * extractSP(Graphe * G, Dijkstra *D) {
 	Arete * res = NULL;
 	Arete * cursor = D->pred[G->t];
-	//	printf("%d to %d\n", G->t, G->s);
 	while (cursor) {
 		if (cursor->s2->numero == G->s) {
 			break;
 		}
-		//	printf("%d --> ", cursor->s2->numero);
 		res = ajouterAreteEnTete(res,
 				creerArete(cursor->s1, cursor->s2, cursor->poids));
 		cursor = D->pred[cursor->s1->numero];
 	}
-	// printf("\n");
-	/*
-	 if (!res) {
-	 fprintf(stderr, "Pas de chemin trouvé.\n");
-	 }
-	 */
 	return res;
 }
 
@@ -111,7 +102,6 @@ Dijkstra * dijkstraTas(Graphe * G, int r) {
 		while (voisin) {
 			int y = voisin->s2->numero;
 			if (voisin->poids < 0) {
-				/* Les arêtes de poids négatives sont ignorés */
 				voisin = voisin->suivant;
 				continue;
 			}
@@ -132,6 +122,61 @@ Dijkstra * dijkstraTas(Graphe * G, int r) {
 		}
 	}
 	freeHeap(h);
-	// printf("Dijkstra done.\n");
+	return res;
+}
+
+Dijkstra * dijkstraPaquet(Graphe * G, int r) {
+	Dijkstra * res = creerDijkstra(G->nbSommets);
+	/* aliases */
+	int * dist = res->dist;
+	Arete ** pred = res->pred;
+	int coutMax = 0;
+	Arete * tmp;
+	int i;
+	for (i = 0; i < G->nbSommets; ++i) {
+		res->pred[i] = NULL;
+		tmp = G->sommets[i]->voisins;
+		while (tmp) {
+			if (tmp->poids > coutMax) {
+				coutMax = tmp->poids;
+			}
+			tmp = tmp->suivant;
+		}
+	}
+	fprintf(stderr, "coutmax : %d\n", coutMax);
+	EnsemblePaquet * ens = initialiserEnsemblePaquet(
+			1 + coutMax * G->nbSommets);
+	ajouterEnsemblePaquet(ens, G->sommets[r], 0);
+	dist[r] = 0;
+	pred[r] = NULL;
+
+	while (!estVideEnsemblePaquet(ens)) {
+		Paquet * min = recupMinEnsemblePaquet(ens);
+		Arete * voisin = min->x->voisins;
+		int x = min->x->numero;
+		free(min);
+		while (voisin) {
+			int y = voisin->s2->numero;
+			if (voisin->poids < 0) {
+				voisin = voisin->suivant;
+				continue;
+			}
+			if (pred[y] == NULL ) {
+				dist[y] = dist[x] + voisin->poids;
+				pred[y] = voisin;
+				ajouterEnsemblePaquet(ens, G->sommets[y], dist[y]);
+			} else {
+				int oldDist = dist[y];
+				if (dist[y] > dist[x] + voisin->poids) {
+					dist[y] = dist[x] + voisin->poids;
+					pred[y] = voisin;
+					supprimerEnsemblePaquet(ens, G->sommets[y], oldDist);
+					ajouterEnsemblePaquet(ens, G->sommets[y], dist[y]);
+				}
+			}
+			voisin = voisin->suivant;
+		}
+	}
+	freeEnsemblePaquet(ens);
 	return res;
 }
