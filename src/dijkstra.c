@@ -143,7 +143,7 @@ Dijkstra * dijkstraPaquet(Graphe * G, int r) {
 			tmp = tmp->suivant;
 		}
 	}
-	fprintf(stderr, "coutmax : %d\n", coutMax);
+	// fprintf(stderr, "coutmax : %d\n", coutMax);
 	EnsemblePaquet * ens = initialiserEnsemblePaquet(
 			1 + coutMax * G->nbSommets);
 	ajouterEnsemblePaquet(ens, G->sommets[r], 0);
