@@ -164,12 +164,17 @@ Paquet * recupMinEnsemblePaquet(EnsemblePaquet * ens) {
 		return NULL ;
 	}
 	for (i = 0; i < ens->taille; i++) {
-		if (ens->tab[i]) {
-			Paquet * res = ens->tab[i];
-			ens->tab[i] = res->suiv;
-			res->suiv = NULL;
-			return res;
+		if (!ens->tab[i]) {
+			continue;
 		}
+		Paquet * res = ens->tab[i];
+		ens->tab[i] = res->suiv;
+		if (ens->tab[i]) {
+			ens->tab[i]->prec = NULL;
+		}
+		res->suiv = NULL;
+		return res;
+
 	}
 	return NULL ;
 }

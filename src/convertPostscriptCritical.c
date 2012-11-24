@@ -33,11 +33,15 @@ int main(int argc, char **argv) {
 		filename = strcat(filename, ".ps");
 		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
 		Dijkstra * D = NULL;
-		// D = dijkstraListe(G, G->s);
+		D = dijkstraListe(G, G->s);
 		// D = dijkstraTas(G, G->s);
-		D = dijkstraPaquet(G, G->s);
+		// D = dijkstraPaquet(G, G->s);
 		Arete * sp = extractSP(G, D);
-		Arete * vitale = solveListe(G, sp);
+		Arete * vitale = NULL;
+
+		vitale = solveListe(G, sp);
+		//	vitale = solveTas(G, sp);
+		//	vitale = solvePaquet(G, sp);
 
 		output = ouvrirFichierWrite(filename);
 		writeGraphe(output, G);
