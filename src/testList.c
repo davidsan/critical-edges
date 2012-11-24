@@ -1,9 +1,9 @@
 /**
- * \file testListe.c
+ * \file testList.c
  * \brief Programme de test des listes
  */
 #include <stdio.h>
-#include "liste.h"
+#include "list.h"
 
 int main(int argc, char **argv) {
 	Liste * l1 = initialiserListe();

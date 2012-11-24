@@ -1,9 +1,9 @@
 /**
- * \file liste.c
+ * \file list.c
  * \brief Source de liste
  */
 
-#include "liste.h"
+#include "list.h"
 
 Element * creerElement(Sommet * x, int l) {
 	Element * new = (Element *) malloc(sizeof(Element));

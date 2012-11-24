@@ -1,5 +1,5 @@
 /**
- * \file fichier.h
+ * \file graph.h
  * \brief En-tête de graphe
  */
 #ifndef __GRAPH_H__

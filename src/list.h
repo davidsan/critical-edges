@@ -1,6 +1,6 @@
 /**
- * \file liste.h
- * \brief En-tête de scanner
+ * \file list.h
+ * \brief En-tête de liste
  */
 #ifndef LISTE_H_
 #define LISTE_H_

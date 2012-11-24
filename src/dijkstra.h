@@ -9,8 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.h"
-#include "liste.h"
+#include "list.h"
 #include "heap.h"
+#include "packet.h"
 
 /**
  * @struct Dijkstra
@@ -59,4 +60,13 @@ Arete * extractSP(Graphe * G, Dijkstra *D);
  * @return Adresse vers une instance de type Dijkstra
  */
 Dijkstra * dijkstraTas(Graphe * G, int r);
+
+/**
+ * @brief Fonction Dijkstra utilisant un ensemble de paquets en tant que bordure
+ * @param G Adresse vers un graphe
+ * @param r Numéro de la racine
+ * @return Adresse vers une instance de type Dijkstra
+ */
+Dijkstra * dijkstraPaquet(Graphe * G, int r);
+
 #endif /* DIJKSTRA_H_ */
