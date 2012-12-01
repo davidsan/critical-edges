@@ -42,7 +42,7 @@ EnsemblePaquet * creerEnsemblePaquet(int taille);
 
 /**
  * @brief Fonction de libération mémoire d'une liste de paquet
- * @param p Adresse d'un paquet à libérer
+ * @param p Adresse de la liste de paquet à libérer
  */
 void freePaquet(Paquet * p);
 

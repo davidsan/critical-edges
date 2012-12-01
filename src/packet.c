@@ -140,7 +140,7 @@ void supprimerEnsemblePaquet(EnsemblePaquet * ens, Sommet * x, int l) {
 void supprimerEnsemblePaquetMem(EnsemblePaquet * ens, Sommet * x, int l) {
 	if (!ens || !ens->tab) {
 		fprintf(stderr,
-				"supprimerEnsemblePaquet : erreur ensemblePaquet non initialisé\n");
+				"supprimerEnsemblePaquetMem : erreur ensemblePaquet non initialisé\n");
 		return;
 	}
 	Paquet * current = ens->tab[l];
