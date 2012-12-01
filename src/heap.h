@@ -25,9 +25,10 @@ typedef struct heapNode {
  * Tas
  */
 typedef struct heap {
-	HeapNode **tab; /*!< tas */
-	int size; /*!< taille */
-	int count; /*!< nombre d'éléments */
+	HeapNode **tab; /*!< Tas */
+	int *pos; /*!< Tableau qui mémorise la position de chaque sommet dans le tas */
+	int size; /*!< Taille */
+	int count; /*!< Nombre d'éléments */
 } Heap;
 
 /**
@@ -75,6 +76,11 @@ void displayHeapDijkstra(Heap * h);
  * @param n Pointeur vers le noeud de tas à afficher
  */
 void displayHeapNode(HeapNode * n);
+/**
+ * @brief Fonction d'affichage du tableau des positions
+ * @param h Adresse vers le tas
+ */
+void displayPos(Heap * h);
 
 /**
  * @brief Fonction qui calcule l'index du fils gauche d'un noeud

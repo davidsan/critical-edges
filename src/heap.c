@@ -8,7 +8,7 @@
 HeapNode *createHeapNode(Sommet * x, int l) {
 	HeapNode *new = (HeapNode *) (malloc(sizeof(HeapNode)));
 	if (!new) {
-		fprintf(stderr, "allocation mémoire\n");
+		fprintf(stderr, "createHeapNode : erreur allocation mémoire\n");
 		return NULL ;
 	}
 	new->x = x;
@@ -24,19 +24,26 @@ Heap *createHeap(int size) {
 	int i;
 	Heap *new = (Heap *) (malloc(sizeof(Heap)));
 	if (!new) {
-		fprintf(stderr, "allocation mémoire\n");
+		fprintf(stderr, "createHeap : erreur allocation mémoire\n");
 		return NULL ;
 	}
 	new->count = 0;
 	new->size = size;
 	new->tab = (HeapNode **) (malloc(sizeof(HeapNode *) * size));
 	if (!new->tab) {
-		fprintf(stderr, "allocation mémoire\n");
+		fprintf(stderr, "createHeap : erreur allocation mémoire\n");
+		freeHeap(new);
+		return NULL ;
+	}
+	new->pos = (int *) (malloc(sizeof(int) * size));
+	if (!new->pos) {
+		fprintf(stderr, "createHeap : erreur allocation mémoire\n");
 		freeHeap(new);
 		return NULL ;
 	}
 	for (i = 0; i < size; ++i) {
 		new->tab[i] = NULL;
+		new->pos[i] = -1;
 	}
 	return new;
 }
@@ -48,6 +55,7 @@ void freeHeap(Heap * h) {
 			freeHeapNode(h->tab[i]);
 		}
 		free(h->tab);
+		free(h->pos);
 		free(h);
 	}
 }
@@ -88,14 +96,30 @@ void displayHeapDijkstra(Heap * h) {
 
 void displayHeapNode(HeapNode * n) {
 	if (!n) {
-		fprintf(stdout, "[ ] ");
+		fprintf(stdout, "[] \t");
 	} else {
 		if (n->l >= INT_MAX) {
-			fprintf(stdout, "[] ");
+			fprintf(stdout, "[] \t");
 		} else {
-			fprintf(stdout, "[%d] ", n->l);
+			fprintf(stdout, "[%d] \t", n->x->numero);
 		}
 	}
+}
+
+void displayPos(Heap * h) {
+	int i;
+	for (i = 0; i < h->size; ++i) {
+		if ((i) % 10 == 0) {
+			printf("\n");
+		}
+		if (h->pos[i] == -1) {
+
+			fprintf(stdout, "[%2.d _]\t", i);
+			continue;
+		}
+		fprintf(stdout, "[%2.d %d]\t", i, h->pos[i]);
+	}
+	printf("\n");
 }
 
 int getLeftChild(int node) {
@@ -112,7 +136,7 @@ int getParent(int node) {
 
 HeapNode *getMinimum(Heap * h) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "getMinimum : erreur tas non initialisé\n");
 		return NULL ;
 	}
 	return h->tab[0];
@@ -120,30 +144,37 @@ HeapNode *getMinimum(Heap * h) {
 
 void heapAddEnd(Heap * h, HeapNode * n) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapAddEnd : erreur tas non initialisé\n");
 		return;
 	}
 	if (h->count >= h->size) {
-		fprintf(stderr, "heap out of capacity");
+		fprintf(stderr, "heapAddEnd : dépassement capacité\n");
 		return;
 	}
 	h->tab[h->count] = n;
+	h->pos[n->x->numero] = h->count;
 	h->count++;
 }
 
 void heapSwap(Heap * h, int i, int j) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapSwap : erreur tas non initialisé\n");
 		return;
 	}
 	HeapNode *tmp = h->tab[i];
 	h->tab[i] = h->tab[j];
 	h->tab[j] = tmp;
+	if (h->tab[j]) {
+		h->pos[h->tab[j]->x->numero] = j;
+	}
+	if (h->tab[i]) {
+		h->pos[h->tab[i]->x->numero] = i;
+	}
 }
 
 void heapHeapifyUp(Heap * h, int i) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapHeapifyUp : erreur tas non initialisé\n");
 		return;
 	}
 	if (i != 0) {
@@ -155,33 +186,27 @@ void heapHeapifyUp(Heap * h, int i) {
 			heapSwap(h, parent, i);
 			heapHeapifyUp(h, parent);
 		}
-
 	}
 }
 
 void heapHeapifyDown(Heap * h, int i) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapHeapifyDown : erreur tas non initialisé\n");
 		return;
 	}
 	int left = getLeftChild(i);
 	int right = getRightChild(i);
 	int lowest = i;
-
 	if (left < h->count && h->tab[left]->l < h->tab[lowest]->l) {
 		lowest = left;
 	}
-
 	if (right < h->count && h->tab[right]->l < h->tab[lowest]->l) {
 		lowest = right;
 	}
-
 	if (lowest != i) {
 		heapSwap(h, lowest, i);
 		heapHeapifyDown(h, lowest);
 	}
-
-	return;
 }
 
 void heapAdd(Heap * h, HeapNode * n) {
@@ -190,18 +215,12 @@ void heapAdd(Heap * h, HeapNode * n) {
 }
 
 int heapNodeNumberExists(Heap * h, int n) {
-	int i;
-	for (i = 0; i < h->size; ++i) {
-		if (h->tab[i]->x->numero == n) {
-			return 1;
-		}
-	}
-	return 0;
+	return h->pos[n] != -1;
 }
 
 int heapNodeExists(Heap * h, int n) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapNodeExists : erreur tas non initialisé\n");
 		return 0;
 	}
 	return (h->tab[n] != NULL );
@@ -209,15 +228,17 @@ int heapNodeExists(Heap * h, int n) {
 
 HeapNode *heapExtractHead(Heap * h) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapExtractHead : erreur tas non initialisé\n");
 		return NULL ;
 	}
 	if (h->count == 0) {
-		fprintf(stderr, "heap is empty");
+		fprintf(stderr, "heapExtractHead : tas vide\n");
 		return NULL ;
 	}
 	HeapNode *head = h->tab[0];
 	h->tab[0] = NULL;
+	h->pos[head->x->numero] = -1;
+
 	heapSwap(h, 0, h->count - 1);
 	h->count--;
 	heapHeapifyDown(h, 0);
@@ -226,22 +247,21 @@ HeapNode *heapExtractHead(Heap * h) {
 
 HeapNode *heapExtract(Heap * h, int i) {
 	if (!h) {
-		fprintf(stderr, "heap not init");
+		fprintf(stderr, "heapExtract : erreur tas non initialisé\n");
 		return NULL ;
 	}
 	if (h->count == 0) {
-		fprintf(stderr, "heap is empty");
+		fprintf(stderr, "heapExtract : tas vide\n");
 		return NULL ;
 	}
 	int index = heapFindIndex(h, i);
 	HeapNode *head = h->tab[index];
 	h->tab[index] = NULL;
+	h->pos[head->x->numero] = -1;
 	heapSwap(h, index, h->count - 1);
 	h->count--;
 	heapHeapifyDown(h, index);
-	/* patch friday */
 	heapHeapifyUp(h, index);
-
 	return head;
 }
 
@@ -250,23 +270,14 @@ int heapIsEmpty(Heap * h) {
 }
 
 int heapFindIndex(Heap * h, int i) {
-	int j;
-	for (j = 0; j < h->count; ++j) {
-		if (h->tab[j]->x->numero == i) {
-			return j;
-		}
+	if (h->pos[i] == -1) {
+		fprintf(stdout, "heapFindIndex : erreur %d non présent\n", i);
 	}
-	return -1;
+	return h->pos[i];
 }
 
 int heapContains(Heap * h, int i) {
-	int j;
-	for (j = 0; j < h->count; j++) {
-		if (h->tab[j]->x->numero == i) {
-			return 1;
-		}
-	}
-	return 0;
+	return heapFindIndex(h, i) != -1;
 }
 
 Heap * initialiserTas(int taille) {
