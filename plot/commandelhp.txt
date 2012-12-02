@@ -1,0 +1,20 @@
+set terminal pdf font "Helvetica, 7" linewidth 1 rounded
+set termoption dash
+set style line 80 lt rgb "#808080"
+set style line 81 lt 0  # dashed
+set style line 81 lt rgb "#808080"  # grey
+set grid back linestyle 81
+set border 3 back linestyle 80
+set xtics nomirror
+set ytics nomirror
+set style line 1 lt 2 lc rgb "#A00000" lw 2 pt 1
+set style line 2 lt 1 lc rgb "#00A000" lw 2 pt 1
+set style line 3 lt 1 lc rgb "#5060D0" lw 2 pt 1
+set output "sortielhp.pdf"
+set ylabel "Time (seconds)"
+set key top left
+set xtics rotate by -90
+
+plot "output.dat" using 2:xticlabels(1) title "list" with l ls 3, \
+     "output.dat" using 3:xticlabels(1) title "heap" with l ls 2, \
+     "output.dat" using 4:xticlabels(1) title "packet" with l ls 1
