@@ -1,4 +1,4 @@
-# Critical edges
+# Finding the most critical edge on a graph
 ================
 
 ## Introduction
