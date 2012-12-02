@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 	char *filename = NULL;
 
 	if (argc < 2) {
-		fprintf(stderr, "Usage : ./convertPostscript file.gph ...\n");
+		fprintf(stderr, "usage: %s <gph-files>\n", argv[0]);
 		return 1;
 	}
 	int i;
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 		filename = basename(argv[i]);
 		filename = strtok(filename, ".");
 		filename = strcat(filename, ".ps");
-		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
+		fprintf(stderr, "Converting %s to %s...\n", argv[i], filename);
 
 		output = ouvrirFichierWrite(filename);
 		writeGraphe(output, G);

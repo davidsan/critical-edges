@@ -124,7 +124,7 @@ void writeAreteVitale(FILE * f, Arete * vitale) {
 
 		current = current->suivant;
 	}
-	fprintf(stdout, "%d arête(s) vitale(s)\n", i);
+	fprintf(stdout, "Number of most critical edge : %d\n", i);
 }
 
 void fillBg(FILE *f, int width, int height) {

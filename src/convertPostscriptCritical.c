@@ -19,12 +19,18 @@ int main(int argc, char **argv) {
 	Graphe * G = NULL;
 	char *filename = NULL;
 
-	if (argc < 2) {
-		fprintf(stderr, "Usage : ./convertPostscriptCritical file.gph ...\n");
+	if (argc < 3 || (argc > 1 && (atoi(argv[1]) < 1 || atoi(argv[1]) > 4))) {
+		fprintf(stderr, "usage: %s <datastruct> <gph-files>\n", argv[0]);
+		fprintf(stderr, "\n");
+		fprintf(stderr, "The datastruct parameters are:\n");
+		fprintf(stderr, "   1 : Ordered linked list\n");
+		fprintf(stderr, "   2 : Binary heap\n");
+		fprintf(stderr, "   3 : Packets\n");
+		fprintf(stderr, "   4 : Packets (circular storage)\n");
 		return 1;
 	}
 	int i;
-	for (i = 1; i < argc; i++) {
+	for (i = 2; i < argc; i++) {
 		f = ouvrirFichierRead(argv[i]);
 		G = lectureGraphe(f);
 
@@ -32,16 +38,46 @@ int main(int argc, char **argv) {
 		filename = strtok(filename, ".");
 		filename = strcat(filename, ".ps");
 		fprintf(stderr, "Converting %s to %s ...\n", argv[i], filename);
-		Dijkstra * D = NULL;
-		D = dijkstraListe(G, G->s);
-		// D = dijkstraTas(G, G->s);
-		// D = dijkstraPaquet(G, G->s);
-		Arete * sp = extractSP(G, D);
-		Arete * vitale = NULL;
 
-		vitale = solveListe(G, sp);
-		//	vitale = solveTas(G, sp);
-		//	vitale = solvePaquet(G, sp);
+		Dijkstra * D = NULL;
+		switch (atoi(argv[1])) {
+		case 2:
+			fprintf(stderr, "Using a binary heap\n");
+			D = dijkstraTas(G, G->s);
+			break;
+		case 3:
+			fprintf(stderr, "Using packets\n");
+			D = dijkstraPaquet(G, G->s);
+			break;
+		case 4:
+			fprintf(stderr, "Using packets (circular storage)\n");
+			D = dijkstraPaquetMod(G, G->s);
+			break;
+		default:
+			fprintf(stderr, "Using an ordered linked list\n");
+			D = dijkstraListe(G, G->s);
+			break;
+		}
+
+		Arete * sp = extractSP(G, D);
+		fprintf(stderr, "Cost of the shortest path (Dijsktra) : %d\n",
+				calculCout(sp));
+
+		Arete * vitale = NULL;
+		switch (atoi(argv[1])) {
+		case 2:
+			vitale = solveTas(G, sp);
+			break;
+		case 3:
+			vitale = solvePaquet(G, sp);
+			break;
+		case 4:
+			vitale = solvePaquetMod(G, sp);
+			break;
+		default:
+			vitale = solveListe(G, sp);
+			break;
+		}
 
 		output = ouvrirFichierWrite(filename);
 		writeGraphe(output, G);
@@ -53,6 +89,7 @@ int main(int argc, char **argv) {
 		freeArete(sp);
 		freeDijkstra(D);
 		fprintf(stderr, "Done.\n");
+		fprintf(stderr, "\n");
 		freeGraphe(G);
 		if (f) {
 			fermerFichier(f);

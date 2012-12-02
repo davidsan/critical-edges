@@ -33,4 +33,12 @@ Arete * solveTas(Graphe * G, Arete * sp);
  */
 Arete * solvePaquet(Graphe * G, Arete * sp);
 
+/**
+ * @brief Fonction qui recherche les arêtes vitales d'un graphe et d'un chemin associé en utilisant un ensemble de paquet optimisé comme bordure
+ * @param G Adresse d'un graphe
+ * @param sp Liste d'arêtes représentant un chemin
+ * @return Liste d'arêtes vitales
+ */
+Arete * solvePaquetMod(Graphe * G, Arete * sp);
+
 #endif /* SOLVER_H_ */
