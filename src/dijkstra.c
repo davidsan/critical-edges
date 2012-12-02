@@ -178,3 +178,57 @@ Dijkstra * dijkstraPaquet(Graphe * G, int r) {
 	freeEnsemblePaquet(ens);
 	return res;
 }
+
+Dijkstra * dijkstraPaquetMod(Graphe * G, int r) {
+	Dijkstra * res = creerDijkstra(G->nbSommets);
+	/* aliases */
+	int * dist = res->dist;
+	Arete ** pred = res->pred;
+	int coutMax = 0;
+	Arete * tmp;
+	int i;
+	for (i = 0; i < G->nbSommets; ++i) {
+		res->pred[i] = NULL;
+		tmp = G->sommets[i]->voisins;
+		while (tmp) {
+			if (tmp->poids > coutMax) {
+				coutMax = tmp->poids;
+			}
+			tmp = tmp->suivant;
+		}
+	}
+	EnsemblePaquetMod * ens = initialiserEnsemblePaquetMod(coutMax + 1);
+	ajouterEnsemblePaquetMod(ens, G->sommets[r], 0);
+	dist[r] = 0;
+	pred[r] = NULL;
+
+	while (!estVideEnsemblePaquetMod(ens)) {
+		PaquetMod * min = recupMinEnsemblePaquetMod(ens);
+		Arete * voisin = min->x->voisins;
+		int x = min->x->numero;
+		free(min);
+		while (voisin) {
+			int y = voisin->s2->numero;
+			if (voisin->poids < 0) {
+				voisin = voisin->suivant;
+				continue;
+			}
+			if (pred[y] == NULL ) {
+				dist[y] = dist[x] + voisin->poids;
+				pred[y] = voisin;
+				ajouterEnsemblePaquetMod(ens, G->sommets[y], dist[y]);
+			} else {
+				int oldDist = dist[y];
+				if (dist[y] > dist[x] + voisin->poids) {
+					dist[y] = dist[x] + voisin->poids;
+					pred[y] = voisin;
+					supprimerEnsemblePaquetMod(ens, G->sommets[y], oldDist);
+					ajouterEnsemblePaquetMod(ens, G->sommets[y], dist[y]);
+				}
+			}
+			voisin = voisin->suivant;
+		}
+	}
+	freeEnsemblePaquetMod(ens);
+	return res;
+}

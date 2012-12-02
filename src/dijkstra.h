@@ -12,6 +12,7 @@
 #include "list.h"
 #include "heap.h"
 #include "packet.h"
+#include "packetmod.h"
 
 /**
  * @struct Dijkstra
@@ -52,7 +53,6 @@ Dijkstra * dijkstraListe(Graphe * G, int r);
  */
 Arete * extractSP(Graphe * G, Dijkstra *D);
 
-
 /**
  * @brief Fonction Dijkstra utilisant un tas en tant que bordure
  * @param G Adresse vers un graphe
@@ -68,5 +68,13 @@ Dijkstra * dijkstraTas(Graphe * G, int r);
  * @return Adresse vers une instance de type Dijkstra
  */
 Dijkstra * dijkstraPaquet(Graphe * G, int r);
+
+/**
+ * @brief Fonction Dijkstra utilisant un ensemble de paquets optimisé en tant que bordure
+ * @param G Adresse vers un graphe
+ * @param r Numéro de la racine
+ * @return Adresse vers une instance de type Dijkstra
+ */
+Dijkstra * dijkstraPaquetMod(Graphe * G, int r);
 
 #endif /* DIJKSTRA_H_ */
